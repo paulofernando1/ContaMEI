@@ -1,0 +1,35 @@
+/* Add print styles to the end of index.css */
+@media print {
+  @page { margin: 10mm; }
+  .app-container { padding: 0 !important; }
+  .sidebar, .title-bar-custom, .no-print, .btn-primary, .btn-secondary, .filter-bar { display: none !important; }
+  .main-content { margin: 0 !important; padding: 0 !important; background: white !important; color: black !important; height: auto !important; overflow: visible !important; }
+  body { background: white !important; color: black !important; }
+  .print-container { padding: 0 !important; background: white !important; color: black !important; }
+  .print-content { padding: 0 !important; border: none !important; border-radius: 0 !important; background: white !important; color: black !important; }
+  table th { border-bottom: 2px solid #ccc !important; }
+  table td, table th { border: 1px solid #ddd !important; color: black !important; }
+  tr { page-break-inside: avoid; }
+  ::-webkit-scrollbar { display: none; }
+}
+
+.print-only {
+  display: none !important;
+}
+
+@media print {
+  .print-only {
+    display: block !important;
+  }
+  body.print-das-only .animate-in > *:not(.print-only) {
+    display: none !important;
+  }
+  body.print-das-only .das-ticket {
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+  body.print-das-only .das-ticket:last-child {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+}
