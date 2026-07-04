@@ -39,6 +39,7 @@ mkdir -p "$PROJECT_DIR/dist-electron"
 # Copia o artefato de volta para a pasta do Dropbox
 echo "Copiando artefatos compilados de volta para a pasta do projeto..."
 cp -R dist-electron/*.exe "$PROJECT_DIR/dist-electron/" 2>/dev/null || true
+cp -R dist-electron/win-unpacked "$PROJECT_DIR/dist-electron/" 2>/dev/null || true
 
 # Limpeza
 echo "Limpando diretório temporário..."
