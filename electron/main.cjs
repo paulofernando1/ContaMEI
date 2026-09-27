@@ -134,28 +134,49 @@ app.whenReady().then(async () => {
     } catch { return false; }
   });
 
-  // Read OFX file and parse it
+  // Read OFX file with UTF-8 and Latin-1 encoding detection
   ipcMain.handle('file:readOFX', async (event, filePath) => {
     try {
-      const raw = await fs.readFile(filePath, 'latin1');
+      const buffer = await fs.readFile(filePath);
+      let raw;
+      try {
+        const textUtf8 = buffer.toString('utf8');
+        raw = textUtf8.includes('\uFFFD') ? buffer.toString('latin1') : textUtf8;
+      } catch {
+        raw = buffer.toString('latin1');
+      }
       return parseOFX(raw);
     } catch (err) {
       throw new Error(`Erro ao ler OFX: ${err.message}`);
     }
   });
 
-  // File read/write
+  // File read/write (Atomic File Write with temp file + rename)
   ipcMain.handle('file:read', async (event, filePath) => {
     const data = await fs.readFile(filePath, 'utf8');
     return JSON.parse(data);
   });
   ipcMain.handle('file:write', async (event, filePath, data) => {
-    await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8');
-    return true;
+    const tempPath = `${filePath}.${Date.now()}.${Math.random().toString(36).slice(2)}.tmp`;
+    try {
+      await fs.writeFile(tempPath, JSON.stringify(data, null, 2), 'utf8');
+      await fs.rename(tempPath, filePath);
+      return true;
+    } catch (err) {
+      try { await fs.unlink(tempPath); } catch {}
+      throw err;
+    }
   });
   ipcMain.handle('file:writeText', async (event, filePath, text) => {
-    await fs.writeFile(filePath, text, 'utf8');
-    return true;
+    const tempPath = `${filePath}.${Date.now()}.${Math.random().toString(36).slice(2)}.tmp`;
+    try {
+      await fs.writeFile(tempPath, text, 'utf8');
+      await fs.rename(tempPath, filePath);
+      return true;
+    } catch (err) {
+      try { await fs.unlink(tempPath); } catch {}
+      throw err;
+    }
   });
 
   // Recents

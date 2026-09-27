@@ -1,3 +1,15 @@
+# ============================================================
+# ContaMEI (APP MEI-ME) - .gitignore
+# ============================================================
+
+# Arquivos de Tasks Internas / Documentação Local
+/IARef/
+Tasks.md
+Tasks*.md
+BRAIN.md
+Brain.md
+/scratch/
+
 # Logs
 logs
 *.log
@@ -7,21 +19,34 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-dist-electron
-release
+# Dependências e Builds
+node_modules/
+dist/
+dist-ssr/
+dist-electron/
+release/
 *.local
-/IARef/
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
+Thumbs.db
+Desktop.ini
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.bak
+*.tmp
+
+# Variáveis de Ambiente e Dados Locais
+.env
+.env.*
+*.sqlite
+*.db
+
+# Conflitos de Sincronização do Dropbox
+*conflicted copy*
